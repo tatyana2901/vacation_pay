@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор отпускных</title>
+</head>
+<body>
+<form action="/calculate" method="get" th:object="${vacRequest}">
+    Первый день отпуска <input type="date"  id="startDate" th:field="*{startDate}" required>
+    <br>
+    <br>
+    Последний день отпуска <input type="date" id="endDate" th:field="*{endDate}" required>
+    <br>
+    <br>
+    Заработок за 12 месяцев <input type="number" id="salary" th:field="*{salary}" step="0.01" required>
+    <br>
+    <br>
+    <input type="submit" value="Рассчитать сумму отпускных">
+
+</form>
+
+    <p th:if="${vacationSalary != null}">Сумма отпускных: <span th:text="${vacationSalary}"></span></p>
+
+</body>
+</html>
