@@ -6,8 +6,10 @@ import com.example.vacation_pay.service.VacCalcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import jakarta.validation.Valid;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -27,9 +29,11 @@ public class VacCalcController {
 
 
     @GetMapping("/calculate")
-    public String getResult(Model model, @ModelAttribute("vacRequest") VacRequest vacRequest) {
+    public String getResult(Model model, @Valid @ModelAttribute("vacRequest") VacRequest vacRequest, BindingResult bindingResult) {
 
-
+        if (bindingResult.hasErrors()) {
+            return "vacCalculator"; // Возвращаемся на форму с отображением ошибок валидации
+        }
         VacResponse vacResponse = vacCalcService.getVacationPay(vacRequest);
         String formattedSalary = String.format("%.2f", vacResponse.getVacationSalary());
         model.addAttribute("vacationSalary", formattedSalary);

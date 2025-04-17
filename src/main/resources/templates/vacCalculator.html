@@ -6,13 +6,16 @@
 </head>
 <body>
 <form action="/calculate" method="get" th:object="${vacRequest}">
-    Первый день отпуска <input type="date"  id="startDate" th:field="*{startDate}" required>
+    Первый день отпуска <input type="date"  id="startDate" th:field="*{startDate}">
+    <span th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></span>
     <br>
     <br>
-    Последний день отпуска <input type="date" id="endDate" th:field="*{endDate}" required>
+    Последний день отпуска <input type="date" id="endDate" th:field="*{endDate}">
+    <span th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></span>
     <br>
     <br>
-    Заработок за 12 месяцев <input type="number" id="salary" th:field="*{salary}" step="0.01" required>
+    Заработок за 12 месяцев <input type="number" id="salary" th:field="*{salary}" step="0.01">
+    <span th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"></span>
     <br>
     <br>
     <input type="submit" value="Рассчитать сумму отпускных">
