@@ -1,6 +1,8 @@
 package com.example.vacation_pay.service;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -13,8 +15,8 @@ import java.util.List;
 
 @Service
 public class HolidayService {
-
-    private final String HOLIDAYS_FILE = "holidays.csv"; // Файл в src/main/resources
+    @Value("${holidays.file.name}")
+    private String HOLIDAYS_FILE; // Файл в src/main/resources
     private final DateTimeFormatter INPUT_DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/y");
 
     private List<LocalDate> holidays = new ArrayList<>();
@@ -33,6 +35,7 @@ public class HolidayService {
         }
     }
 
+    @Cacheable("holidays")
     public List<LocalDate> getHolidays() {
         return holidays;
     }
