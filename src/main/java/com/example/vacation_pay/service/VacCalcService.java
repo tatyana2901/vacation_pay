@@ -15,13 +15,14 @@ public class VacCalcService {
     @Autowired
     HolidayService holidayService;
     private static final double AVG_DAYS_IN_MONTH = 29.3;
+    private static final int MONTHS_IN_YEAR = 12;
 
     public VacResponse getVacationPay(VacRequest vacRequest) {
 
         if (vacRequest.getStartDate().isAfter(vacRequest.getEndDate())) {
             throw new IllegalDatesOrderException("День начала отпуска не может быть позже дня его окончания!");
         }
-        double avgDaySalary = vacRequest.getSalary() / (12 * AVG_DAYS_IN_MONTH); //считаем средненевной заработок
+        double avgDaySalary = vacRequest.getSalary() / (MONTHS_IN_YEAR * AVG_DAYS_IN_MONTH); //считаем средненевной заработок
         double vacationSalary = avgDaySalary * getCountOfPaidDays(vacRequest.getStartDate(), vacRequest.getEndDate());//получаем итоговую сумму отпускных
         return new VacResponse(vacationSalary);
 
