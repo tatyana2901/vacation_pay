@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 public class HolidayService {
-    @Value("${holidays.file.name}")
+    @Value("${holidays.file.name}") //название файла с праздниками указано в файле app.properties
     private String HOLIDAYS_FILE; // Файл в src/main/resources
     private final DateTimeFormatter INPUT_DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/y");
 
@@ -24,7 +24,7 @@ public class HolidayService {
     @PostConstruct
     public void loadHolidays() {
 
-        try (BufferedReader bfr = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(HOLIDAYS_FILE)))) {
+        try (BufferedReader bfr = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(HOLIDAYS_FILE)))) {//загрузка данных о праздниках из файла внутри проекта
             String line;
             while ((line = bfr.readLine()) != null) {
                 LocalDate holiday = LocalDate.parse(line, INPUT_DATE_FORMAT);
@@ -42,7 +42,7 @@ public class HolidayService {
 
     public boolean isHoliday(LocalDate day) {
         return holidays.stream().anyMatch(x -> x.equals(day));
-    }
+    } //проверка даты - является ли она праздником
 }
 
 

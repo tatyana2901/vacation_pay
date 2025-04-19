@@ -19,12 +19,12 @@ public class VacCalcService {
 
     public VacResponse getVacationPay(VacRequest vacRequest) {
 
-        if (vacRequest.getStartDate().isAfter(vacRequest.getEndDate())) {
-            throw new IllegalDatesOrderException("День начала отпуска не может быть позже дня его окончания!");
+        if (vacRequest.getStartDate().isAfter(vacRequest.getEndDate())) { //если дата начала отпуска позже даты окончания отпуска
+            throw new IllegalDatesOrderException("День начала отпуска не может быть позже дня его окончания!"); //выбрасывается исключение
         }
         double avgDaySalary = vacRequest.getSalary() / (MONTHS_IN_YEAR * AVG_DAYS_IN_MONTH); //считаем средненевной заработок
         double vacationSalary = avgDaySalary * getCountOfPaidDays(vacRequest.getStartDate(), vacRequest.getEndDate());//получаем итоговую сумму отпускных
-        return new VacResponse(vacationSalary);
+        return new VacResponse(vacationSalary); // возвращаем результат расчета отпускных, запакованный в VacResponse
 
     }
 

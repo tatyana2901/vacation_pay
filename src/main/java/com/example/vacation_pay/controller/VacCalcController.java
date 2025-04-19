@@ -15,7 +15,7 @@ import jakarta.validation.Valid;
 @Controller
 public class VacCalcController {
 
-    @Autowired
+    @Autowired  //автоматическое создание связи с сервисом
     VacCalcService vacCalcService;
 
     @GetMapping("/")
@@ -30,10 +30,10 @@ public class VacCalcController {
         if (bindingResult.hasErrors()) {
             return "vacCalculator"; // Возвращаемся на форму с отображением ошибок валидации
         }
-        VacResponse vacResponse = vacCalcService.getVacationPay(vacRequest);
-        String formattedSalary = String.format("%.2f", vacResponse.getVacationSalary());
-        model.addAttribute("vacationSalary", formattedSalary);
-        return "vacCalculator";
+        VacResponse vacResponse = vacCalcService.getVacationPay(vacRequest); //считаем отпускные на основании данных полученного объекта vacRequest и тут же упаковываем результат расчета в объект - ответ vacResponse
+        String formattedSalary = String.format("%.2f", vacResponse.getVacationSalary()); //сокращаем результат до 2 знаков после запятой
+        model.addAttribute("vacationSalary", formattedSalary); //добавляем в модель полученный результат отпускных через реквизит html формы vacationSalary
+        return "vacCalculator"; //возвращаем отображение html
     }
 
 

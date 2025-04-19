@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public class VacRequest {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @NotNull(message = "Внесите дату начала отпуска!")
+    @NotNull(message = "Внесите дату начала отпуска!") //валидация - запрет на пустое значение даты начала отпуска
     private LocalDate startDate;
 
     @NotNull(message = "Внесите дату окончания отпуска!")
@@ -16,7 +16,7 @@ public class VacRequest {
     private LocalDate endDate;
 
     @NotNull(message = "Внесите данные о зарплате!")
-    @Min(message = "Зарплата не может быть отрицательным числом", value = 0)
+    @Min(message = "Зарплата не может быть отрицательным числом", value = 0) //валидация - запрет отрицательной зп
     private Double salary;
 
 
