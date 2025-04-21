@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 class VacCalcServiceTest {
     @Mock //создает искусственный объект-заглушку holidayService, изолируя тестирование calcService
     private HolidayService holidayService;
-    @InjectMocks // автоматически добавляет объект холидэйсервис в объект ваккальксервис
+    @InjectMocks // создаем реальный объект(класс) и внедряем туда @Mock
     private VacCalcService vacCalcService;
 
     @Test
