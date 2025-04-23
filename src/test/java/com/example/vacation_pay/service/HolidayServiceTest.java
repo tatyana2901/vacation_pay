@@ -25,53 +25,44 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class HolidayServiceTest {
     @Spy //mock с возможностью корректировать его поведение там где это необходимо
-    @InjectMocks //создаем реальный объект holidayservice и внедряем туда @spy
+    @InjectMocks //создаем реальный объект holidayService и внедряем туда @spy
     private HolidayService holidayService;
+    static Path resourcePath = Path.of("src", "test", "resources", "test_holidays.csv");
 
-    private final String FILE_NAME_TEST = "test_holidays.csv";
 
     @BeforeEach
-    void createTestHolidayFile() {
-        Path resourcePath = Path.of("src", "test", "resources", FILE_NAME_TEST);
-        try (FileWriter fileWriter = new FileWriter(resourcePath.toString())) {
-            fileWriter.write("01/01/2025\n");
-            fileWriter.write("07/05/2025\n");
-            fileWriter.write("02/06/2025\n");
-            fileWriter.write("15/09/2025\n");
-            fileWriter.write("01/10/2025\n");
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        ReflectionTestUtils.setField(holidayService, "HOLIDAYS_FILE", FILE_NAME_TEST);
-        holidayService.loadHolidays();
-        System.out.println(holidayService.getHolidays());
+    void doFirst() throws InterruptedException {
 
+        ReflectionTestUtils.setField(holidayService, "HOLIDAYS_FILE", resourcePath.getFileName().toString()); //подменяем строку с названием файла оригинального
+        holidayService.loadHolidays();
     }
 
-   /* @AfterEach
-    void deleteTestHolidayFile() {
-
-        try {
-            Files.delete(Path.of(FILE_NAME_TEST));
-
-            System.out.println("УДАЛЕНИЕ");
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-    }*/
 
     @Test
-    void successfulFileLoad() {
+    void loadHolidaysTestOk(){ //проверяем, что список праздников подгрузился из файла правильно
         List<LocalDate> holidays = holidayService.getHolidays();
         assertFalse(holidays.isEmpty());
         assertEquals(LocalDate.of(2025, 1, 1), holidays.getFirst());
+        assertEquals(LocalDate.of(2025, 5, 7), holidays.get(1));
+        assertEquals(LocalDate.of(2025, 6, 2), holidays.get(2));
+        assertEquals(LocalDate.of(2025, 9, 15), holidays.get(3));
+        assertEquals(LocalDate.of(2025, 10, 1), holidays.get(4));
+
     }
-   /* @Test
-    void loadHolidays() {
+
+
+    @Test
+    void isHoliday_true() { //проверяем работу метода isHoliday
+        assertTrue(holidayService.isHoliday(LocalDate.of(2025, 6, 2)));
     }
 
     @Test
-    void isHoliday() {
-    }*/
+    void isHoliday_false() {//проверяем работу метода isHoliday
+        assertFalse(holidayService.isHoliday(LocalDate.of(2025, 6, 5)));
+    }
+
+    @Test
+    void isHoliday_false1() {//проверяем работу метода isHoliday
+        assertFalse(holidayService.isHoliday(LocalDate.of(2025, 9, 16)));
+    }
 }

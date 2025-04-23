@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,21 +23,20 @@ public class HolidayService {
 
     private List<LocalDate> holidays = new ArrayList<>();
 
-    @PostConstruct
+   // @PostConstruct //метод выполняется сразу после создания объекта HolidayService только 1 раз
     public void loadHolidays() {
-
         try (BufferedReader bfr = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(HOLIDAYS_FILE)))) {//загрузка данных о праздниках из файла внутри проекта
             String line;
             while ((line = bfr.readLine()) != null) {
                 LocalDate holiday = LocalDate.parse(line, INPUT_DATE_FORMAT);
-                holidays.add(holiday);
+                holidays.add(holiday); //парсим и добавляем даты в список holidays
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
     }
 
-    @Cacheable("holidays")
+    @Cacheable("holidays") //демонстрация кэширования
     public List<LocalDate> getHolidays() {
         return holidays;
     }
