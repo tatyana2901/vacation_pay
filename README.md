@@ -6,10 +6,15 @@ Vacation Pay Calculator: Spring Boot Application
 
 
 Технологии и паттерны:
+
 Spring Boot
+
 Spring MVC
+
 Spring Validation
+
 Thymeleaf
+
 JUnit, Mockito
 
 Принцип работы:
